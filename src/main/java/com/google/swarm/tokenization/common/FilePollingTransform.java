@@ -56,8 +56,7 @@ public abstract class FilePollingTransform
         .apply(
             "Poll Input Files",
             FileIO.match()
-                .filepattern(filePattern())
-                .continuously(interval(), Watch.Growth.never()))
+                .filepattern(filePattern()))
         .apply("Find Pattern Match", FileIO.readMatches().withCompression(Compression.AUTO))
         .apply(ParDo.of(new SanitizeFileNameDoFn()));
   }
