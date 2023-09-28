@@ -105,7 +105,7 @@ public abstract class DLPTransform
   @Override
   public PCollectionTuple expand(PCollection<KV<String, Table.Row>> input) {
     switch (dlpmethod()) {
-      case INSPECT:
+      /*case INSPECT:
         {
           return input
               .apply(
@@ -124,7 +124,7 @@ public abstract class DLPTransform
                   ParDo.of(new ConvertInspectResponse(jobName()))
                       .withOutputTags(
                           Util.inspectOrDeidSuccess, TupleTagList.of(Util.inspectOrDeidFailure)));
-        }
+        }*/
 
       case DEID:
         {
@@ -148,7 +148,7 @@ public abstract class DLPTransform
                       .withOutputTags(
                           Util.inspectOrDeidSuccess, TupleTagList.of(Util.inspectOrDeidFailure)));
         }
-      case REID:
+      /*case REID:
         {
           return input
               .apply(
@@ -167,7 +167,7 @@ public abstract class DLPTransform
                   "ConvertReidResponse",
                   ParDo.of(new ConvertReidResponse())
                       .withOutputTags(Util.reidSuccess, TupleTagList.of(Util.reidFailure)));
-        }
+        }*/
       default:
         {
           throw new IllegalArgumentException("Please validate DLPMethod param!");
@@ -175,7 +175,7 @@ public abstract class DLPTransform
     }
   }
 
-  static class ConvertReidResponse
+  /*static class ConvertReidResponse
       extends DoFn<KV<String, ReidentifyContentResponse>, KV<String, TableRow>> {
 
     private final Counter numberOfBytesReidentified =
@@ -209,10 +209,10 @@ public abstract class DLPTransform
         }
       }
     }
-  }
+  }*/
 
   static class ConvertDeidResponse
-      extends DoFn<KV<String, DeidentifyContentResponse>, KV<String, TableRow>> {
+      extends DoFn<KV<String, DeidentifyContentResponse>, KV<String, Table.Row>> {
 
     private final Counter numberOfRowDeidentified =
         Metrics.counter(ConvertDeidResponse.class, "numberOfRowDeidentified");
@@ -239,15 +239,15 @@ public abstract class DLPTransform
           out.get(Util.inspectOrDeidSuccess)
               .output(
                   KV.of(
-                      fileName,
-                      Util.createBqRow(outputRow, headers.toArray(new String[headers.size()]))));
+                      fileName, outputRow));
+                      //Util.createBqRow(outputRow, headers.toArray(new String[headers.size()]))));
         }
       }
     }
   }
 
-  static class ConvertInspectResponse
-      extends DoFn<KV<String, InspectContentResponse>, KV<String, TableRow>> {
+  /*static class ConvertInspectResponse
+      extends DoFn<KV<String, InspectContentResponse>, KV<String, Table.Row>> {
 
     private String jobName;
 
@@ -325,5 +325,5 @@ public abstract class DLPTransform
                                     .build())));
               });
     }
-  }
+  }*/
 }

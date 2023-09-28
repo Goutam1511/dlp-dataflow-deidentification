@@ -20,6 +20,7 @@ import static org.apache.beam.sdk.schemas.Schema.toSchema;
 
 import com.google.api.services.bigquery.model.TableCell;
 import com.google.api.services.bigquery.model.TableRow;
+import com.google.privacy.dlp.v2.Table;
 import com.google.cloud.storage.BlobId;
 import com.google.cloud.storage.Storage;
 import com.google.cloud.storage.StorageOptions;
@@ -95,10 +96,10 @@ public class Util {
   public static final TupleTag<KV<String, ReadableFile>> headerTag =
       new TupleTag<KV<String, ReadableFile>>() {};
 
-  public static final TupleTag<KV<String, TableRow>> inspectOrDeidSuccess =
-      new TupleTag<KV<String, TableRow>>() {};
-  public static final TupleTag<KV<String, TableRow>> inspectOrDeidFailure =
-      new TupleTag<KV<String, TableRow>>() {};
+  public static final TupleTag<KV<String, Table.Row>> inspectOrDeidSuccess =
+      new TupleTag<KV<String, Table.Row>>() {};
+  public static final TupleTag<KV<String, Table.Row>> inspectOrDeidFailure =
+      new TupleTag<KV<String, Table.Row>>() {};
 
   public static final TupleTag<KV<String, TableRow>> reidSuccess =
       new TupleTag<KV<String, TableRow>>() {};

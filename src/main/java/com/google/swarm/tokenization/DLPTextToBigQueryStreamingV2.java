@@ -31,6 +31,7 @@ import com.google.swarm.tokenization.common.FilePollingTransform;
 import com.google.swarm.tokenization.common.MergeBigQueryRowToDlpRow;
 import com.google.swarm.tokenization.common.PubSubMessageConverts;
 import com.google.swarm.tokenization.common.Util;
+import com.google.swarm.tokenization.common.WriteToLocal;
 import com.google.swarm.tokenization.json.ConvertJsonRecordToDLPRow;
 import com.google.swarm.tokenization.json.JsonReaderSplitDoFn;
 import com.google.swarm.tokenization.txt.ConvertTxtToDLPRow;
@@ -201,11 +202,17 @@ public class DLPTextToBigQueryStreamingV2 {
                 .setInitialBackoff(options.getInitialBackoff())
                 .build())
         .get(Util.inspectOrDeidSuccess)
-        .apply(
+        /*.apply(
             "StreamInsertToBQ",
             BigQueryDynamicWriteTransform.newBuilder()
                 .setDatasetId(options.getDataset())
                 .setProjectId(options.getProject())
+                .build());*/
+        .apply("WriteToLocal",
+                WriteToLocal.newBuilder()
+                .setOutputBucket("/Users/goutambose/Documents/flink_beam_experiments/dlp-dataflow-deidentification/output")
+                .setFileType(options.getFileType())
+                .setColumnDelimiter(',')
                 .build());
   }
 
